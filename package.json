@@ -1,10 +1,11 @@
 {
   "type": "module",
   "name": "jevkoschema.js",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "mod.js",
   "private": true,
   "scripts": {
+    "prepare": "node toggle.node.js",
     "test": "node test.js"
   },
   "repository": {
@@ -14,7 +15,7 @@
   "author": "Darius J Chuck",
   "license": "MIT",
   "dependencies": {
-    "jevkoutils.js": "github:jevko/jevkoutils.js#semver:0.1.2"
+    "jevkoutils.js": "github:jevko/jevkoutils.js#semver:0.1.4"
   },
   "devDependencies": {
     "parsejevko.js": "github:jevko/parsejevko.js#semver:0.1.3"

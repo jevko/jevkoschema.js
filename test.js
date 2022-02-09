@@ -1,6 +1,8 @@
-import {parseJevko} from 'parsejevko.js'
+import {parseJevko} from './devDeps.js'
 
-import { jevkoToSchema } from './mod.js'
+import { jevkoToSchema, schemaToJevko } from './mod.js'
+
+import {jevkoToPrettyString} from './deps.js'
 
 const schemaStr = `
 owner [
@@ -24,3 +26,7 @@ object
 const schema = jevkoToSchema(parseJevko(schemaStr))
 
 console.assert(schema.props[' padded '].type === 'string')
+
+const jevkoStr = jevkoToPrettyString(schemaToJevko(schema))
+
+console.assert(jevkoStr.includes('| padded | [string]'))

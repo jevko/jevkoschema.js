@@ -1,0 +1,1 @@
+export {parseJevko} from 'parsejevko.js'
