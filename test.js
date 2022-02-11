@@ -1,6 +1,6 @@
 import {parseJevko} from './devDeps.js'
 
-import { jevkoToSchema, schemaToJevko } from './mod.js'
+import { sjevkoToSchema, schemaToSjevko } from './mod.js'
 
 import {jevkoToPrettyString} from './deps.js'
 
@@ -23,10 +23,10 @@ database [
 object
 `
 
-const schema = jevkoToSchema(parseJevko(schemaStr))
+const schema = sjevkoToSchema(parseJevko(schemaStr))
 
 console.assert(schema.props[' padded '].type === 'string')
 
-const jevkoStr = jevkoToPrettyString(schemaToJevko(schema))
+const jevkoStr = jevkoToPrettyString(schemaToSjevko(schema))
 
 console.assert(jevkoStr.includes('| padded | [string]'))

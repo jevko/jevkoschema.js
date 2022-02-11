@@ -175,7 +175,7 @@ const mod = {
     jsonToSchema: jsonToSchema,
     interJevkoToSchema: interJevkoToSchema
 };
-const jevkoToSchema = (jevko)=>{
+const sjevkoToSchema = (jevko)=>{
     const { subjevkos , suffix  } = jevko;
     const type = suffix.trim();
     if ([
@@ -203,7 +203,7 @@ const toArray = (jevko)=>{
     if (prefix.trim() !== '') throw Error('empty prefix expected');
     return {
         type: 'array',
-        itemSchema: jevkoToSchema(j)
+        itemSchema: sjevkoToSchema(j)
     };
 };
 const toTuple = (jevko)=>{
@@ -211,7 +211,7 @@ const toTuple = (jevko)=>{
     const itemSchemas = [];
     for (const { prefix , jevko: jevko1  } of subjevkos){
         if (prefix.trim() !== '') throw Error('empty prefix expected');
-        itemSchemas.push(jevkoToSchema(jevko1));
+        itemSchemas.push(sjevkoToSchema(jevko1));
     }
     return {
         type: 'tuple',
@@ -223,7 +223,7 @@ const toFirstMatch = (jevko)=>{
     const alternatives = [];
     for (const { prefix , jevko: jevko2  } of subjevkos){
         if (prefix.trim() !== '') throw Error('empty prefix expected');
-        alternatives.push(jevkoToSchema(jevko2));
+        alternatives.push(sjevkoToSchema(jevko2));
     }
     return {
         type: 'first match',
@@ -239,14 +239,14 @@ const toObject = (jevko)=>{
         if (mid.startsWith('-')) continue;
         const key = mid.startsWith('|') ? mid.slice(1) + post : mid;
         if (key in props) throw Error('duplicate key');
-        props[key] = jevkoToSchema(jevko3);
+        props[key] = sjevkoToSchema(jevko3);
     }
     return {
         type: 'object',
         props
     };
 };
-const schemaToJevko = (schema)=>{
+const schemaToSjevko = (schema)=>{
     const { type  } = schema;
     if ([
         'string',
@@ -273,7 +273,7 @@ const toArray1 = (schema)=>{
         subjevkos: [
             {
                 prefix: '',
-                jevko: schemaToJevko(itemSchema)
+                jevko: schemaToSjevko(itemSchema)
             }
         ]
     };
@@ -284,7 +284,7 @@ const toTuple1 = (schema)=>{
         suffix: 'tuple',
         subjevkos: itemSchemas.map((s)=>({
                 prefix: '',
-                jevko: schemaToJevko(s)
+                jevko: schemaToSjevko(s)
             })
         )
     };
@@ -304,7 +304,7 @@ const toObject1 = (schema)=>{
             }
             return {
                 prefix,
-                jevko: schemaToJevko(v)
+                jevko: schemaToSjevko(v)
             };
         })
     };
@@ -315,11 +315,11 @@ const toFirstMatch1 = (schema)=>{
         suffix: 'first match',
         subjevkos: alternatives.map((s)=>({
                 prefix: '',
-                jevko: schemaToJevko(s)
+                jevko: schemaToSjevko(s)
             })
         )
     };
 };
-export { jevkoToSchema as jevkoToSchema };
-export { schemaToJevko as schemaToJevko };
+export { sjevkoToSchema as sjevkoToSchema };
+export { schemaToSjevko as schemaToSjevko };
 export { mod as schemainfer };

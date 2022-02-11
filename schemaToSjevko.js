@@ -5,7 +5,7 @@ import {trim3} from './deps.js'
  * @param {*} schema 
  * @returns 
  */
-export const schemaToSchemaJevko = (schema) => {
+export const schemaToSjevko = (schema) => {
   const {type} = schema
   if (['string', 'float64', 'boolean', 'empty', 'null'].includes(type)) {
     return {suffix: type, subjevkos: []}
@@ -19,7 +19,7 @@ export const schemaToSchemaJevko = (schema) => {
 
 const toArray = (schema) => {
   const {itemSchema} = schema
-  return {suffix: 'array', subjevkos: [{prefix: '', jevko: schemaToSchemaJevko(itemSchema)}]}
+  return {suffix: 'array', subjevkos: [{prefix: '', jevko: schemaToSjevko(itemSchema)}]}
 }
 
 const toTuple = (schema) => {
@@ -27,7 +27,7 @@ const toTuple = (schema) => {
   const {itemSchemas, isSealed} = schema
   return {
     suffix: 'tuple', 
-    subjevkos: itemSchemas.map(s => ({prefix: '', jevko: schemaToSchemaJevko(s)}))
+    subjevkos: itemSchemas.map(s => ({prefix: '', jevko: schemaToSjevko(s)}))
   }
 }
 
@@ -45,7 +45,7 @@ const toObject = (schema) => {
         prefix += mid
         if (post !== '') prefix += post + '|'
       }
-      return {prefix, jevko: schemaToSchemaJevko(v)}
+      return {prefix, jevko: schemaToSjevko(v)}
     })
   }
 }
@@ -54,6 +54,6 @@ const toFirstMatch = (schema) => {
 
   return {
     suffix: 'first match', 
-    subjevkos: alternatives.map(s => ({prefix: '', jevko: schemaToSchemaJevko(s)}))
+    subjevkos: alternatives.map(s => ({prefix: '', jevko: schemaToSjevko(s)}))
   }
 }
