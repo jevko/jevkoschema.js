@@ -1,8 +1,13 @@
 import {trim3} from './deps.js'
 
-export const schemaToJevko = (schema) => {
+/**
+ * converts an interschema value to a jevko which represents it
+ * @param {*} schema 
+ * @returns 
+ */
+export const schemaToSchemaJevko = (schema) => {
   const {type} = schema
-  if (['string', 'float64', 'boolean', 'null'].includes(type)) {
+  if (['string', 'float64', 'boolean', 'empty', 'null'].includes(type)) {
     return {suffix: type, subjevkos: []}
   }
   if (type === 'array') return toArray(schema)
@@ -14,7 +19,7 @@ export const schemaToJevko = (schema) => {
 
 const toArray = (schema) => {
   const {itemSchema} = schema
-  return {suffix: 'array', subjevkos: [{prefix: '', jevko: schemaToJevko(itemSchema)}]}
+  return {suffix: 'array', subjevkos: [{prefix: '', jevko: schemaToSchemaJevko(itemSchema)}]}
 }
 
 const toTuple = (schema) => {
@@ -22,7 +27,7 @@ const toTuple = (schema) => {
   const {itemSchemas, isSealed} = schema
   return {
     suffix: 'tuple', 
-    subjevkos: itemSchemas.map(s => ({prefix: '', jevko: schemaToJevko(s)}))
+    subjevkos: itemSchemas.map(s => ({prefix: '', jevko: schemaToSchemaJevko(s)}))
   }
 }
 
@@ -40,7 +45,7 @@ const toObject = (schema) => {
         prefix += mid
         if (post !== '') prefix += post + '|'
       }
-      return {prefix, jevko: schemaToJevko(v)}
+      return {prefix, jevko: schemaToSchemaJevko(v)}
     })
   }
 }
@@ -49,6 +54,6 @@ const toFirstMatch = (schema) => {
 
   return {
     suffix: 'first match', 
-    subjevkos: alternatives.map(s => ({prefix: '', jevko: schemaToJevko(s)}))
+    subjevkos: alternatives.map(s => ({prefix: '', jevko: schemaToSchemaJevko(s)}))
   }
 }

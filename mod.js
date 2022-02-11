@@ -1,2 +1,3 @@
-export {jevkoToSchema} from './jevkoToSchema.js'
-export {schemaToJevko} from './schemaToJevko.js'
+export {schemaJevkoToSchema} from './schemaJevkoToSchema.js'
+export {schemaToSchemaJevko} from './schemaToSchemaJevko.js'
+export {schemainfer} from './deps.js'
