@@ -53,7 +53,7 @@ const toArray = (jevko, schema) => {
   const {itemSchema} = schema
   for (const {prefix, jevko} of subjevkos) {
     if (prefix.trim() !== '') throw Error(`nonempty prefix (${prefix})`)
-    items.push({prefix, item: jevkoBySchemaToVerified(jevko, itemSchema)})
+    items.push({prefix, value: jevkoBySchemaToVerified(jevko, itemSchema)})
   }
   return {schema, jevko, items}
 }
@@ -68,7 +68,7 @@ const toTuple = (jevko, schema) => {
   for (let i = 0; i < itemSchemas.length; ++i) {
     const {prefix, jevko} = subjevkos[i]
     if (prefix.trim() !== '') throw Error(`nonempty prefix (${prefix})`)
-    items.push({prefix, item: jevkoBySchemaToVerified(jevko, itemSchemas[i])})
+    items.push({prefix, value: jevkoBySchemaToVerified(jevko, itemSchemas[i])})
   }
   return {schema, jevko, items}
 }

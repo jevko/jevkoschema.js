@@ -2,7 +2,8 @@ import {parseJevko, assertEquals, assert} from './devDeps.js'
 
 import { sjevkoToSchema, schemaToSjevko, jevkoBySchemaToVerified } from './mod.js'
 
-import {jevkoToPrettyString} from './deps.js'
+import {jevkoToPrettyString, jevkoToString} from './deps.js'
+import { zipWithSchema } from './zipWithSchema.js'
 
 const {test} = Deno
 
@@ -59,4 +60,8 @@ test('jevkoBySchemaToVerified', () => {
   assertEquals(verified.schema.type, 'object')
   assertEquals(verified.jevko.subjevkos.length, 3)
   assertEquals(verified.items[0].ignored, true)
+})
+
+test('zipWithSchema', () => {
+  assert(jevkoToString(zipWithSchema(jevko, schema)).includes("'John Doe"))
 })
