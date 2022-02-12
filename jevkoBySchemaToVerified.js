@@ -14,7 +14,7 @@ export const jevkoBySchemaToVerified = (jevko, schema) => {
 }
 
 const toString = (jevko, schema) => {
-  const {subjevkos, suffix} = jevko
+  const {subjevkos} = jevko
   if (subjevkos.length > 0) throw Error('nonempty subjevkos in string')
   return {schema, jevko}
 }
@@ -49,7 +49,6 @@ const toNull = (jevko, schema) => {
 const toArray = (jevko, schema) => {
   const {subjevkos, suffix} = jevko
   if (suffix.trim() !== '') throw Error('suffix !== ""')
-  let ret = ''
   const items = []
   const {itemSchema} = schema
   for (const {prefix, jevko} of subjevkos) {
@@ -62,7 +61,6 @@ const toArray = (jevko, schema) => {
 const toTuple = (jevko, schema) => {
   const {subjevkos, suffix} = jevko
   if (suffix.trim() !== '') throw Error('suffix !== ""')
-  let ret = ''
   const items = []
   const {itemSchemas, isSealed} = schema
   if (itemSchemas.length > subjevkos.length) throw Error('bad tuple')
@@ -79,8 +77,8 @@ const toObject = (jevko, schema) => {
   const {subjevkos, suffix} = jevko
   if (suffix.trim() !== '') throw Error('suffix !== ""')
   const keyJevkos = Object.create(null)
-  let ret = ''
   const items = []
+  // todo: optional props
   const {optional = [], isSealed = true, props} = schema
   const keys = Object.keys(props)
   for (const {prefix, jevko} of subjevkos) {
