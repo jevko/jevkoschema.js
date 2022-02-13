@@ -42,7 +42,7 @@ const toNull = (jevko, schema) => {
   const {subjevkos, suffix} = jevko
   if (subjevkos.length > 0) throw Error('nonempty subjevkos in string')
   const trimmed = suffix.trim()
-  if (trimmed === 'null') return {schema, jevko, trimmed, value: null}
+  if (trimmed === 'null' || suffix === '') return {schema, jevko, trimmed, value: null}
   throw Error(`not a null (${suffix})`)
 }
 
