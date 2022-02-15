@@ -1,8 +1,11 @@
-import {parseJevko} from './devDeps.js'
+import {parseJevko, assertEquals, assert} from './devDeps.js'
 
-import { jevkoToSchema, schemaToJevko } from './mod.js'
+import { sjevkoToSchema, schemaToSjevko, jevkoBySchemaToVerified } from './mod.js'
 
-import {jevkoToPrettyString} from './deps.js'
+import {jevkoToPrettyString, jevkoToString} from './deps.js'
+import { zipWithSchema } from './zipWithSchema.js'
+
+const {test} = Deno
 
 const schemaStr = `
 owner [
@@ -23,10 +26,42 @@ database [
 object
 `
 
-const schema = jevkoToSchema(parseJevko(schemaStr))
+const schema = sjevkoToSchema(parseJevko(schemaStr))
 
-console.assert(schema.props[' padded '].type === 'string')
+test('sjevkoToSchema', () => {
+  assertEquals(schema.props[' padded '].type, 'string')
+})
 
-const jevkoStr = jevkoToPrettyString(schemaToJevko(schema))
+const sjevkoStr = jevkoToPrettyString(schemaToSjevko(schema))
 
-console.assert(jevkoStr.includes('| padded | [string]'))
+test('schemaToSjevko', () => {
+  assert(sjevkoStr.includes('| padded | [string]'))
+})
+
+const jevko = parseJevko(`
+- [last modified 1 April 2001 by John Doe]
+owner [
+  name [John Doe]
+  organization [Acme Widgets Inc.]
+]
+
+database [
+  - [use IP address in case network name resolution is not working]
+  server [192.0.2.62]
+  port [143]
+  file [payroll.dat]
+  select columns [[name][address][phone number]]
+]
+`)
+
+test('jevkoBySchemaToVerified', () => {
+  const verified = jevkoBySchemaToVerified(jevko, schema)
+
+  assertEquals(verified.schema.type, 'object')
+  assertEquals(verified.jevko.subjevkos.length, 3)
+  assertEquals(verified.items[0].ignored, true)
+})
+
+test('zipWithSchema', () => {
+  assert(jevkoToString(zipWithSchema(jevko, schema)).includes("'John Doe"))
+})

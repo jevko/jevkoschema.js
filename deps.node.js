@@ -1,1 +1,0 @@
-export {trim3, jevkoToPrettyString} from 'jevkoutils.js'

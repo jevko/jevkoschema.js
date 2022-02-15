@@ -1,10 +1,15 @@
 import {trim3} from './deps.js'
 
-export const jevkoToSchema = (jevko) => {
+/**
+ * converts a jevko which represents an interschema value to an interschema value
+ * @param {*} jevko 
+ * @returns 
+ */
+export const sjevkoToSchema = (jevko) => {
   const {subjevkos, suffix} = jevko
   const type = suffix.trim()
 
-  if (['string', 'float64', 'boolean', 'null'].includes(type)) {
+  if (['string', 'float64', 'boolean', 'empty', 'null'].includes(type)) {
     if (subjevkos.length > 0) throw Error('subs > 0 in primitive type')
     return {type}
   }
@@ -23,7 +28,7 @@ const toArray = (jevko) => {
   if (prefix.trim() !== '') throw Error('empty prefix expected')
   return {
     type: 'array',
-    itemSchema: jevkoToSchema(j)
+    itemSchema: sjevkoToSchema(j)
   }
 }
 
@@ -33,7 +38,7 @@ const toTuple = (jevko) => {
   const itemSchemas = []
   for (const {prefix, jevko} of subjevkos) {
     if (prefix.trim() !== '') throw Error('empty prefix expected')
-    itemSchemas.push(jevkoToSchema(jevko))
+    itemSchemas.push(sjevkoToSchema(jevko))
   }
   return {
     type: 'tuple',
@@ -47,7 +52,7 @@ const toFirstMatch = (jevko) => {
   const alternatives = []
   for (const {prefix, jevko} of subjevkos) {
     if (prefix.trim() !== '') throw Error('empty prefix expected')
-    alternatives.push(jevkoToSchema(jevko))
+    alternatives.push(sjevkoToSchema(jevko))
   }
   return {
     type: 'first match',
@@ -69,7 +74,7 @@ const toObject = (jevko) => {
     // for use with unusual keys
     const key = mid.startsWith('|')? mid.slice(1) + post: mid
     if (key in props) throw Error('duplicate key')
-    props[key] = jevkoToSchema(jevko)
+    props[key] = sjevkoToSchema(jevko)
   }
 
   return {
