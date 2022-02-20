@@ -30,7 +30,8 @@ const recur = (zjevko) => {
     }
   }
   else for (const {prefix, jevko} of subjevkos) {
-    ret += `${escape(prefix)}[${recur(jevko)}]`
+    ret.push([prefix], ["["], ...recur(jevko), ["]"])
+    // ret += `${escape(prefix)}[${recur(jevko)}]`
   }
   return ["span", ["class=", [type], ...ret, [suffix]]]
   // return ret + `${suffix}</span>`
